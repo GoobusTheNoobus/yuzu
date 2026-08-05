@@ -1,6 +1,4 @@
-func main(): i32 {
-    let a = 'a';
-    let b = '\n';
-    let c = '\'';
-    let d = '\\';
-}
+let a = 'a';
+let b = '\n';
+let c = '\'';
+let d = '\\';

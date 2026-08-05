@@ -91,10 +91,11 @@ namespace yuzu {
             }
             auto value = parseExpression();
 
-            return std::make_unique<VarDecleration>(identifier.value, value, type);
+            return std::make_unique<VarDecleration>(identifier.value, std::move(value), type);
         }
 
         diagnostic::throwError(diagnostic::ErrorType::SyntaxError, "Expected '=' for variable declaration");
+        return nullptr;
     }
 
     NodePointer Parser::parseReturn() {
@@ -116,7 +117,7 @@ namespace yuzu {
         return std::make_unique<VarAssignment>(name, parseExpression());
     }
 
-    NodePointer Parser::parseExpression() {
+    NodePointer Parser::parseAdditive() {
         auto left = parseMultiplicative();
 
         while (!end() && (current().type == TokenType::OperatorPlus || current().type == TokenType::OperatorMinus)) {
@@ -125,7 +126,7 @@ namespace yuzu {
 
             auto right = parseMultiplicative();
 
-            left = std::make_unique<BinaryNode>(left, right, op);
+            left = std::make_unique<BinaryNode>(std::move(left), std::move(right), op);
         }
 
         return left;
@@ -159,7 +160,7 @@ namespace yuzu {
 
             auto right = parsePostfix();
 
-            left = std::make_unique<BinaryNode>(left, right, op);
+            left = std::make_unique<BinaryNode>(std::move(left), std::move(right), op);
         }
 
         return left;

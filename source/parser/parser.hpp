@@ -36,10 +36,10 @@ namespace yuzu {
         NodePointer parseReturn();
 
         // Expression
-        NodePointer parseExpression() {
+        inline NodePointer parseExpression() {
             // This function is just a wrapper for the lowest precedence operation
             // support at the moment
-            parseAdditive();
+            return parseAdditive();
         }
 
         NodePointer parsePrimary();

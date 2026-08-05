@@ -1,5 +1,6 @@
 #include "cli/file.hpp"
 #include "lexer/lexer.hpp"
+#include "parser/parser.hpp"
 #include <iostream>
 
 using namespace yuzu;
@@ -21,8 +22,9 @@ int main(int argc, char* argv[]) {
 
     Lexer lexer;
     auto tokens = lexer.tokenize(fileContent);
-
-    std::cout << tokens;
+    Parser parser;
+    auto node = parser.parse(tokens);
+    node->print(0);
 
     return EXIT_SUCCESS;
 }
