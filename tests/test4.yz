@@ -1,0 +1,8 @@
+func main(): i32 {
+    let a = "";
+    let b = "Hello";
+    let c = "Hello\nWorld";
+    let d = "Tab:\tDone";
+    let e = "\"Quoted\"";
+    let f = "\\";
+}

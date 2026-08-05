@@ -9,9 +9,12 @@ find_package(LLVM REQUIRED CONFIG)
 
 add_executable(yuzu
     source/main.cpp
+    source/cli/file.cpp
+    source/diagnostic/error.cpp
+    source/lexer/lexer.cpp
 )
 
-target_include_directories(yuzu PRIVATE ${LLVM_INCLUDE_DIRS})
+target_include_directories(yuzu PRIVATE ${LLVM_INCLUDE_DIRS} source)
 
 llvm_map_components_to_libnames(LLVM_LIBS
     core

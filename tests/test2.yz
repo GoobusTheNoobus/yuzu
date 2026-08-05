@@ -1,0 +1,7 @@
+func main(): i32 {
+    let a: i32 = 10;
+    let b: f64 = 3.14;
+    let c: bool = true;
+    let d: string = "Hello";
+    return 0;
+}
