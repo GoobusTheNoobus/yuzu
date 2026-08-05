@@ -4,25 +4,36 @@
 
 namespace yuzu {
     class Lexer {
-    public:
+      public:
         Lexer() = default;
-        TokenList tokenize(const String& source);
+        TokenList tokenize(const std::string& source);
 
-    private:
-        String source;
-        usize index = 0;
+      private:
+        std::string source;
+        usize index{0};
 
-        inline char current() const { return source.at(index); }
-        inline char peek() const { return source.at(index + 1); }
-        inline bool end() const { return index >= source.size(); }
-        inline void consume() { ++index; }
+        inline char current() const {
+            return source.at(index);
+        }
 
-        String readWord();
-        TokenType inferTypeFromWord(const String& word);
-        TokenType inferTypeFromOperator(const String& word);
+        inline char peek() const {
+            return source.at(index + 1);
+        }
+
+        inline bool end() const {
+            return index >= source.size();
+        }
+
+        inline void consume() {
+            ++index;
+        }
+
+        std::string readWord();
+        TokenType inferTypeFromWord(const std::string& word);
+        TokenType inferTypeFromOperator(const std::string& word);
         void tokenizeString(TokenList& list);
         void tokenizeNumber(TokenList& list);
         void tokenizeChar(TokenList& list);
         void tokenizeOperator(TokenList& list);
     };
-}
+} // namespace yuzu

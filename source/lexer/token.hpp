@@ -1,7 +1,7 @@
 #pragma once
 #include "core/core.hpp"
-#include <vector>
 #include <iostream>
+#include <vector>
 
 namespace yuzu {
 
@@ -9,7 +9,7 @@ namespace yuzu {
 
         // Special
         EndOfFile,
-        
+
         // Literal types
         IntegerLiteral,
         StringLiteral,
@@ -25,6 +25,7 @@ namespace yuzu {
         KeywordFunc,
         KeywordReturn,
         KeywordIf,
+        KeywordElseif,
         KeywordElse,
         KeywordWhile,
         KeywordFor,
@@ -60,15 +61,19 @@ namespace yuzu {
         SemiColon,
     };
 
+    inline bool isType(TokenType type) {
+        return (int)type >= (int)TokenType::TypeI8 && (int)type <= (int)TokenType::TypeVoid;
+    }
+
     struct Token {
-        String value;
+        std::string value;
         TokenType type;
     };
 
-    // String representations, indexed by the integer value 
+    // String representations, indexed by the integer value
     // of given TokenType
 
-    inline constexpr StringView tokenTypeToString[] = {
+    inline constexpr std::string_view tokenTypeToString[] = {
         "EndOfFile",
         "IntegerLiteral",
         "StringLiteral",
@@ -81,6 +86,7 @@ namespace yuzu {
         "KeywordFunc",
         "KeywordReturn",
         "KeywordIf",
+        "KeywordElseif",
         "KeywordElse",
         "KeywordWhile",
         "KeywordFor",
@@ -112,11 +118,11 @@ namespace yuzu {
     using TokenList = std::vector<Token>;
 
     inline std::ostream& operator<<(std::ostream& stream, const Token& token) {
-        if (token.value.empty()) 
+        if (token.value.empty())
             stream << "{ " << tokenTypeToString[(int)token.type] << " }";
-        else 
+        else
             stream << "{ \"" << token.value << "\", " << tokenTypeToString[(int)token.type] << " }";
-        
+
         return stream;
     }
 
@@ -126,4 +132,4 @@ namespace yuzu {
         }
         return stream;
     }
-}
+} // namespace yuzu

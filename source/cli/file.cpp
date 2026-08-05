@@ -4,11 +4,11 @@
 #include <sstream>
 
 namespace yuzu {
-    String readFile(const char path[]) {
+
+    std::string readFile(const char path[]) {
         std::fstream input(path);
         if (!input.is_open()) {
-            diagnostic::throwError(diagnostic::ErrorType::FileNotOpenError, "Cannot open file '" + String(path) + "'");
-            return "";
+            diagnostic::throwError(diagnostic::ErrorType::FileNotOpenError, "Cannot open file '" + std::string(path) + "'");
         }
 
         std::stringstream stream;
@@ -16,4 +16,5 @@ namespace yuzu {
 
         return stream.str();
     }
-}
+
+} // namespace yuzu

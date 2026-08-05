@@ -6,7 +6,9 @@ namespace yuzu::diagnostic {
         SyntaxError,
         FileNotOpenError,
         InternalError,
+        IntegerError,
     };
 
-    void throwError(ErrorType err, const String& msg);
-}
+    void throwError(ErrorType err, const std::string& msg);
+
+} // namespace yuzu::diagnostic

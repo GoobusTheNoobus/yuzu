@@ -70,3 +70,6 @@ Testing/
 
 # ide generated folers
 .vscode/
+
+# format file
+.clang-format

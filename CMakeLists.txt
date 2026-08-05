@@ -12,6 +12,7 @@ add_executable(yuzu
     source/cli/file.cpp
     source/diagnostic/error.cpp
     source/lexer/lexer.cpp
+    source/parser/parser.cpp
 )
 
 target_include_directories(yuzu PRIVATE ${LLVM_INCLUDE_DIRS} source)
