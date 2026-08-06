@@ -13,6 +13,9 @@ add_executable(yuzu
     source/diagnostic/error.cpp
     source/lexer/lexer.cpp
     source/parser/parser.cpp
+    source/semantic/analysis.cpp
+    source/semantic/functions.cpp
+    source/semantic/symbols.cpp
 )
 
 target_include_directories(yuzu PRIVATE ${LLVM_INCLUDE_DIRS} source)

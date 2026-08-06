@@ -6,6 +6,8 @@ namespace yuzu::diagnostic {
         SyntaxError,
         FileNotOpenError,
         InternalError,
+        NameError,
+        TypeError,
         IntegerError,
     };
 

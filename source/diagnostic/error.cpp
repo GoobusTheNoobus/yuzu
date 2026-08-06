@@ -3,7 +3,8 @@
 
 namespace yuzu::diagnostic {
 
-    constexpr std::string_view errorTypeToString[] = {"SyntaxError", "FileNotOpenError", "InternalError", "IntegerError"};
+    constexpr std::string_view errorTypeToString[] = {
+        "SyntaxError", "FileNotOpenError", "InternalError", "NameError", "TypeError", "IntegerError"};
 
     void throwError(ErrorType err, const std::string& msg) {
         std::cerr << Red << "Yuzu." << errorTypeToString[(int)err] << ": " << msg << std::endl << Reset;

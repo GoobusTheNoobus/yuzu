@@ -11,6 +11,7 @@ namespace yuzu {
 
         Program,
         Block,
+        Cast,
 
         IntegerLiteral,
         StringLiteral,
@@ -49,6 +50,7 @@ namespace yuzu {
         "None",
         "Program",
         "Block",
+        "Cast",
         "IntegerLiteral",
         "StringLiteral",
         "CharacterLiteral",
@@ -83,6 +85,7 @@ namespace yuzu {
 
     struct Node {
         NodeType type{NodeType::None};
+        BuiltinType resolvedType{BuiltinType::Auto};
 
         // Virtual dihstructor because inheritances have
         // different size
@@ -185,16 +188,16 @@ namespace yuzu {
     struct VarDecleration : Node {
         std::string name;
         NodePointer value;
-        BuiltinType type{BuiltinType::Auto};
+        BuiltinType varType{BuiltinType::Auto};
 
         VarDecleration(const std::string& name, NodePointer value, BuiltinType type)
-            : Node(NodeType::VariableDeclaration), name(name), value(std::move(value)), type(type) {}
+            : Node(NodeType::VariableDeclaration), name(name), value(std::move(value)), varType(type) {}
 
         void print(int indent) const override {
             std::cout << std::string(indent, ' ') << "(VariableDeclaration) " << name;
 
-            if (type != BuiltinType::Auto)
-                std::cout << " : " << builtinTypeToString[(int)type];
+            if (varType != BuiltinType::Auto)
+                std::cout << " : " << builtinTypeToString[(int)varType];
 
             std::cout << '\n';
 
@@ -285,6 +288,18 @@ namespace yuzu {
             std::cout << '\n';
 
             definition.print(indent + 4);
+        }
+    };
+
+    struct CastNode : Node {
+        BuiltinType to;
+        NodePointer thing;
+
+        CastNode(BuiltinType to, NodePointer thing) : Node(NodeType::Cast), to(to), thing(std::move(thing)) {}
+
+        void print(int indent) const override {
+            std::cout << std::string(indent, ' ') << "(Cast)" << builtinTypeToString[(int)to] << std::endl;
+            thing->print(indent + 4);
         }
     };
 
