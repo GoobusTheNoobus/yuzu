@@ -12,6 +12,7 @@ namespace yuzu {
         Program,
         Block,
         Cast,
+        Exit,
 
         IntegerLiteral,
         StringLiteral,
@@ -43,31 +44,6 @@ namespace yuzu {
         Star,
         Slash,
         Percent,
-    };
-
-    // Indexed, of course, by the enum number
-    constexpr std::string_view nodeTypeToString[] = {
-        "None",
-        "Program",
-        "Block",
-        "Cast",
-        "IntegerLiteral",
-        "StringLiteral",
-        "CharacterLiteral",
-        "FloatLiteral",
-        "BooleanLiteral",
-        "Identifier",
-        "VariableDeclaration",
-        "VariableAssignment",
-        "ReturnStatement",
-        "IfStatement",
-        "WhileLoop",
-        "ForLoop",
-        "BuiltinType",
-        "BinaryExpression",
-        "UnaryExpression",
-        "FunctionDefinition",
-        "FunctionCall",
     };
 
     constexpr std::string_view binaryOperatorToString[] = {
@@ -288,6 +264,17 @@ namespace yuzu {
             std::cout << '\n';
 
             definition.print(indent + 4);
+        }
+    };
+
+    struct Exit : Node {
+        NodePointer code;
+
+        Exit(NodePointer code) : Node(NodeType::Exit), code(std::move(code)) {}
+
+        void print(int indent) const override {
+            std::cout << std::string(indent, ' ') << "(Exit) " << '\n';
+            code->print(indent + 4);
         }
     };
 

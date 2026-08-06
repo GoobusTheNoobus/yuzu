@@ -23,6 +23,15 @@ namespace yuzu {
             analyzeCall(static_cast<FunctionCallNode&>(node));
             break;
         }
+        case NodeType::Exit: {
+            auto& exit = static_cast<Exit&>(node);
+            auto analysis = analyzeExpression(*exit.code);
+
+            if (!isInteger(analysis.resolvedType)) {
+                diagnostic::throwError(diagnostic::ErrorType::TypeError, "Expected integer type for exit code");
+            }
+            break;
+        }
 
         default: {
             diagnostic::throwError(diagnostic::ErrorType::SyntaxError, "Unknown statement");

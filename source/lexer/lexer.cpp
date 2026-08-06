@@ -130,6 +130,8 @@ namespace yuzu {
     }
 
     TokenType Lexer::inferTypeFromWord(const std::string& word) {
+        if (word == "exit")
+            return TokenType::KeywordExit;
         if (word == "let")
             return TokenType::KeywordLet;
         if (word == "func")

@@ -21,6 +21,7 @@ namespace yuzu {
         Identifier,
 
         // Keywords
+        KeywordExit,
         KeywordLet,
         KeywordFunc,
         KeywordReturn,
@@ -82,6 +83,7 @@ namespace yuzu {
         "BooleanLiteralTrue",
         "BooleanLiteralFalse",
         "Identifier",
+        "KeywordExit",
         "KeywordLet",
         "KeywordFunc",
         "KeywordReturn",

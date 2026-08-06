@@ -46,7 +46,20 @@ namespace yuzu {
 
             diagnostic::throwError(diagnostic::ErrorType::SyntaxError, "Unexpected identifier");
         }
+        case TokenType::KeywordExit: {
+            consume();
+            // std::cout << current();
+            auto expr = parseExpression();
+            if (!expr) {
+                std::cout << "no\n";
+                std::exit(-1);
+            }
+
+            node = std::make_unique<Exit>(std::move(expr));
+            break;
+        }
         default:
+            std::cerr << tokenTypeToString[(int)current().type];
             diagnostic::throwError(diagnostic::ErrorType::SyntaxError, "Expected statement");
         }
 
