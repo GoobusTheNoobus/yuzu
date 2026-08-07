@@ -30,6 +30,10 @@ namespace yuzu {
             if (!isInteger(analysis.resolvedType)) {
                 diagnostic::throwError(diagnostic::ErrorType::TypeError, "Expected integer type for exit code");
             }
+
+            exit.code = insertImplicitCast(std::move(exit.code), analysis, BuiltinType::I32);
+
+            exit.resolvedType = analysis.resolvedType;
             break;
         }
 
@@ -111,6 +115,8 @@ namespace yuzu {
             if (!lookup) {
                 diagnostic::throwError(diagnostic::ErrorType::NameError, "Unknown identifier '" + identifier.name + "'");
             }
+
+            identifier.resolvedType = lookup->type;
 
             return {lookup->type, false};
         }

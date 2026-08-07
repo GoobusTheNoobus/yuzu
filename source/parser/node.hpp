@@ -1,8 +1,10 @@
 #pragma once
 #include "core/core.hpp"
 #include "core/types.hpp"
+#include <iostream>
 #include <memory>
 #include <vector>
+
 
 namespace yuzu {
 

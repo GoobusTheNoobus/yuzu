@@ -16,6 +16,7 @@ add_executable(yuzu
     source/semantic/analysis.cpp
     source/semantic/functions.cpp
     source/semantic/symbols.cpp
+    source/codegen/codegen.cpp
 )
 
 target_include_directories(yuzu PRIVATE ${LLVM_INCLUDE_DIRS} source)
