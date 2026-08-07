@@ -74,5 +74,6 @@ Testing/
 # format file
 .clang-format
 
-# yz files
+# yuzu files
 temp.yz
+*.ll

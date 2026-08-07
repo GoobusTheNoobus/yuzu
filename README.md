@@ -10,6 +10,7 @@ Requirements:
 * CMake
 * Ninja
 * LLVM libraries
+* LLVM tools
 
 To configure, navigate to project root and run
 `cmake -B build -G Ninja`

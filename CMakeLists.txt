@@ -9,7 +9,7 @@ find_package(LLVM REQUIRED CONFIG)
 
 add_executable(yuzu
     source/main.cpp
-    source/cli/file.cpp
+    source/file/file.cpp
     source/diagnostic/error.cpp
     source/lexer/lexer.cpp
     source/parser/parser.cpp
@@ -22,8 +22,23 @@ add_executable(yuzu
 target_include_directories(yuzu PRIVATE ${LLVM_INCLUDE_DIRS} source)
 
 llvm_map_components_to_libnames(LLVM_LIBS
-    core
-    support
+    Core
+    Support
+    Target
+    TargetParser
+    MC
+    X86CodeGen
+    X86AsmParser
+    X86Desc
+    X86Info
+    AsmPrinter
+    CodeGen
+    ScalarOpts
+    InstCombine
+    TransformUtils
+    Analysis
+    Passes
 )
+
 
 target_link_libraries(yuzu PRIVATE ${LLVM_LIBS})

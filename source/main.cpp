@@ -1,15 +1,17 @@
-#include "cli/file.hpp"
 #include "codegen/codegen.hpp"
+#include "file/file.hpp"
 #include "lexer/lexer.hpp"
 #include "parser/parser.hpp"
 #include "semantic/analysis.hpp"
-#include <chrono>
 #include <iostream>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/raw_ostream.h>
+#include <llvm/MC/TargetRegistry.h>
+#include <llvm/Support/Program.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Target/TargetMachine.h>
+#include <llvm/Target/TargetOptions.h>
+#include <llvm/TargetParser/Host.h>
 
 using namespace yuzu;
-using namespace std::chrono;
 
 int main(int argc, char* argv[]) {
     if (argc <= 1) {
@@ -23,63 +25,41 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
-    // Read given file
-    std::string fileContent = readFile(argv[1]);
+    // Read file
+    std::string fileName = argv[1];
+    std::string fileContent = readFile(fileName.data());
 
-    /*
-    std::cout << "DEBUG: \n------------------------------------------\n"
-              << fileContent << std::endl
-              << "------------------------------------------" << std::endl;
-    */
-
-    std::cout << "[1/4] Tokenizing code";
-    auto start = steady_clock::now();
+    // Lexical analysis
+    std::cout << "[1/4] Parsing code" << std::endl;
     Lexer lexer;
     TokenList tokens = lexer.tokenize(fileContent);
-    auto end = steady_clock::now();
 
-    std::cout << "\r[1/4] Tokenizing code (finished in " << (duration_cast<microseconds>(end - start).count() / 1000.0) << " ms)"
-              << std::endl;
-
-    std::cout << "[2/4] Parsing code";
-    start = steady_clock::now();
+    // Parse tree
     Parser parser;
     NodePointer node = parser.parse(tokens);
     Program& program = static_cast<Program&>(*node);
 
-    end = steady_clock::now();
-
-    std::cout << "\r[2/4] Parsing code (finished in " << (duration_cast<microseconds>(end - start).count() / 1000.0) << " ms)" << std::endl;
-
-    std::cout << "[3/4] Performing semantic analysis";
-    start = steady_clock::now();
+    // Semantic analysis
+    std::cout << "[2/4] Analyzing code" << std::endl;
     Analysis analyzer;
     analyzer.analyze(program);
 
-    end = steady_clock::now();
+    // LLVM codegen & object file
+    std::cout << "[3/4] Generating object file" << std::endl;
 
-    std::cout << "\r[3/4] Performing semantic analysis (finished in " << (duration_cast<microseconds>(end - start).count() / 1000.0)
-              << " ms)" << std::endl;
-
-    std::cout << "[4/4] Generating IR file";
-    start = steady_clock::now();
+    // Initialize llvm shit
+    llvm::InitializeNativeTarget();
+    llvm::InitializeNativeTargetAsmPrinter();
+    llvm::InitializeNativeTargetAsmParser();
 
     CodeGen generator;
-    llvm::Module* module = generator.generate(program);
-    std::error_code error;
+    llvm::Module* _module = generator.generate(program);
 
-    llvm::raw_fd_ostream output("temp.ll", error);
+    writeObjectFile("obj.o", _module);
 
-    if (error) {
-        llvm::errs() << "Could not open file: " << error.message() << "\n";
-        return EXIT_FAILURE;
-    }
+    std::cout << "[4/4] Linking output executable" << std::endl;
 
-    module->print(output, nullptr);
-    end = steady_clock::now();
-
-    std::cout << "\r[4/4] Generating IR file (finished in " << (duration_cast<microseconds>(end - start) / 1000.0).count() << " ms)"
-              << std::endl;
+    link("obj.o", "program.exe");
 
     return EXIT_SUCCESS;
 }

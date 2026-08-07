@@ -1,0 +1,4 @@
+let EXIT_SUCCESS: i32 = 0;
+let EXIT_FAILURE: i32 = 1;
+
+exit EXIT_FAILURE;
